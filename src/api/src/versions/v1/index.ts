@@ -26,7 +26,7 @@ versionRouter.all('/', function (req: Request, res: Response) {
  * If we have accesstoken than return logged user object.
  * Also can contain more global data as user preferred settings for design, menu, ...
  */
-versionRouter.all('/whoami', function (req: Request, res: Response) {
+versionRouter.all('/who-am-i', function (req: Request, res: Response) {
     if (req.method !== 'GET') {
         res.set('Allow', 'GET').status(405).send();
     }
@@ -34,6 +34,7 @@ versionRouter.all('/whoami', function (req: Request, res: Response) {
     Auth.validate((err, user) => {
         const output = {
             user: user || null,
+            time: new Date().getTime(),
         };
         res.json(output);
     }, req.headers['authorization']);

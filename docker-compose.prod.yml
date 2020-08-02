@@ -2,19 +2,11 @@ version: '3'
 services:
     client:
         build:
-            context: ./src/client
-        volumes:
-            - ./src/client:/client
-            - /client/node_modules
+            dockerfile: Dockerfile.prod
         ports:
-            - 3000:3000
-        tty: true
-        container_name: mini_app_client
-        depends_on:
-            - api
+            - 8080:80
     api:
-        build:
-            context: ./src/api
+        build: ./src/api
         env_file:
             - .env
         volumes:
