@@ -1,13 +1,6 @@
 import * as constants from './constants';
-import { GuiState } from './state';
+import { initialState, GuiState } from './state';
 import { GuiActions } from './actions';
-import config from '../../config';
-
-const initialState: GuiState = {
-    isOpen: [],
-    isTrigger: [],
-    ...config,
-};
 
 const guiReducer = (state: GuiState = initialState, action: GuiActions): GuiState => {
     let trigger: string[] = [];

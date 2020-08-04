@@ -1,60 +1,47 @@
 import axios, { AxiosResponse } from 'axios';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import {
-    AuthStates,
-    SET_STATE,
-    STATE_UNAUTHORIZED,
-    STATE_SIGNING_IN,
-    STATE_AUTHORIZING,
-    STATE_AUTHORIZED,
-} from './constants';
+import { SET_STATE, SET_SIGNED_OUT, SET_SIGNED_IN } from './constants';
 import State from '../state';
 
-export interface SetStatus {
+export interface SetState {
     type: SET_STATE;
-    payload: { state: AuthStates; data: State['auth']['data']; error: null | string };
+    payload: State['auth']['state'];
 }
-export const setStatus = (
-    state: AuthStates,
-    data: State['auth']['data'] = null,
-    error: null | string = null,
-): SetStatus => ({
-    type: SET_STATE,
-    payload: { state, data, error },
-});
+export function setState(data: State['auth']['state']): SetState {
+    return { type: SET_STATE, payload: data };
+}
 
-export type AuthActions = SetStatus;
+export interface SetSignedOut {
+    type: SET_SIGNED_OUT;
+}
+export function setSignedOut(): SetSignedOut {
+    return { type: SET_SIGNED_OUT };
+}
 
-export const logout = (): ThunkAction<SetStatus, State, null, any> => {
-    return (dispatch: ThunkDispatch<State, undefined, any>): SetStatus => {
+export interface SetSignedIn {
+    type: SET_SIGNED_IN;
+    payload: State['auth']['data'];
+}
+export function setSignedIn(data: State['auth']['data']): SetSignedIn {
+    return { type: SET_SIGNED_IN, payload: data };
+}
+
+export type AuthActions = SetState | SetSignedOut | SetSignedIn;
+
+//
+
+// TODO: otazne ci nechat a nepresunut ako signIn
+export const logout = (): ThunkAction<SetSignedOut, State, null, any> => {
+    return (dispatch: ThunkDispatch<State, undefined, any>): SetSignedOut => {
         localStorage.removeItem('token');
-        return dispatch(setStatus(STATE_UNAUTHORIZED));
-    };
-};
-
-export const signIn = (username: string, password: string): ThunkAction<Promise<any>, State, null, any> => {
-    return async (dispatch: ThunkDispatch<State, null, any>): Promise<any> => {
-        dispatch(setStatus(STATE_SIGNING_IN));
-        try {
-            const response: AxiosResponse<{ token: string }> = await axios.post<{ token: string }>(
-                '/api/v1/sign-in',
-                { username, password },
-                { headers: { 'Content-Type': 'application/json' } },
-            );
-            localStorage.setItem('token', response.data.token);
-
-            dispatch(fetchAuthUser());
-        } catch (err) {
-            dispatch(setStatus(STATE_UNAUTHORIZED, null, err.response.data.message));
-        }
+        return dispatch(setSignedOut());
     };
 };
 
 export const fetchAuthUser = (): ThunkAction<Promise<any>, State, null, any> => {
-    // , getState: () => State
     return async (dispatch: ThunkDispatch<State, null, any>): Promise<any> => {
-        dispatch(setStatus(STATE_AUTHORIZING));
+        dispatch(setState('authorizing'));
 
         const token = localStorage.getItem('token');
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -65,25 +52,13 @@ export const fetchAuthUser = (): ThunkAction<Promise<any>, State, null, any> => 
             );
 
             if (response.data) {
-                dispatch(setStatus(STATE_AUTHORIZED, response.data));
+                dispatch(setSignedIn(response.data));
             } else {
-                localStorage.removeItem('token');
-                dispatch(setStatus(STATE_UNAUTHORIZED));
+                throw Error('Unauthorized');
             }
         } catch (err) {
             localStorage.removeItem('token');
-            dispatch(setStatus(STATE_UNAUTHORIZED));
+            dispatch(setState('unauthorized'));
         }
     };
 };
-
-// const shouldFetchAuthUser = (state: State) => {
-//     switch (state.Auth.status) {
-//         case null:
-//         case STATE_AUTHORIZED:
-//             return true;
-
-//         default:
-//             return false;
-//     }
-// };

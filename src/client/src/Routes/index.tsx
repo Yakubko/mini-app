@@ -1,27 +1,36 @@
-import React, { lazy, Suspense, ReactElement } from 'react';
+import React, { Suspense, ReactElement } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Redirect } from 'react-router-dom';
 
+import { fetchAuthUser } from '../Store/Auth/actions';
+
 import Loader from '../Hoc/Loader';
-import Route from './Route';
-
-const SignIn = lazy(() => import('../Pages/Auth/SignIn'));
-const SignUp = lazy(() => import('../Pages/Auth/SignUp'));
-
-const Dashboard = React.lazy(() => import('../Demo/Dashboard/Default'));
-
-const OtherSample = React.lazy(() => import('../Demo/Other/SamplePage'));
-const OtherDocs = React.lazy(() => import('../Demo/Other/Docs'));
+import RouteWrapper from './RouteWrapper';
+import RouteItems from './route-items';
+import State from '../Store/state';
 
 export default function Routes(): ReactElement {
+    const dispatch = useDispatch();
+    const authState = useSelector<State, State['auth']['state']>((state) => state.auth.state);
+    const signedIn = authState === 'authorized';
+
+    if (authState === null || authState === 'authorizing') {
+        if (authState === null) {
+            dispatch(fetchAuthUser());
+        }
+
+        return <Loader />;
+    }
+
+    const routes = RouteItems.map(({ path, exact, component, layout, access }) => {
+        const key: string = (Array.isArray(path) ? path.concat(';') : path ?? Math.random()) as string;
+        return <RouteWrapper {...{ key, path, exact, component, layout, access, signedIn }} />;
+    });
+
     return (
         <Suspense fallback={<Loader />}>
             <Switch>
-                <Route path="/" exact component={SignIn} />
-                <Route path="/registration" exact component={SignUp} />
-
-                <Route path="/dashboard" component={Dashboard} isPrivate />
-                <Route path="/sample-page" exact component={OtherSample} isPrivate />
-                <Route path="/docs" exact component={OtherDocs} isPrivate />
+                {routes}
 
                 <Redirect to="/" />
             </Switch>
