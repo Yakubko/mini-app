@@ -22,24 +22,28 @@ function Form(props: Props): ReactElement {
     const inputsClasses = {
         username: `form-control${errors.username ? ' is-invalid' : ''}`,
         password: `form-control${errors.password ? ' is-invalid' : ''}`,
-        passwordConfirm: `form-control${touched.password_confirm && errors.password_confirm ? ' is-invalid' : ''}`,
+        passwordConfirm: `form-control${
+            errors.password_confirm && (touched.password_confirm || errors.password_confirm.type === 'required')
+                ? ' is-invalid'
+                : ''
+        }`,
     };
 
     const { setSingedUp } = props;
 
-    const onSubmit = async (data: Inputs): Promise<any> => {
+    const onSubmit = async (data: Inputs): Promise<undefined> => {
         return new Promise((resolve) => {
             axios
                 .post('/api/v1/sign-up', data, { headers: { 'Content-Type': 'application/json' } })
                 .then(() => {
-                    resolve(1);
+                    resolve();
                 })
                 .catch((err: AxiosError<any>) => {
                     console.log(err);
 
                     setTimeout(() => {
                         setSingedUp(true);
-                        resolve(1);
+                        resolve();
                     }, 4000);
                 });
         });

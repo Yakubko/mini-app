@@ -39,11 +39,11 @@ export default function RouteWrapper({
     }
 
     if (access === 'private' && !signedIn) {
-        // return <Redirect to="/" />;
+        return <Redirect to="/" />;
     }
 
     if (access === 'public' && signedIn) {
-        // return <Redirect to="/dashboard" />;
+        return <Redirect to="/dashboard" />;
     }
 
     return (

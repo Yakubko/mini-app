@@ -1,22 +1,26 @@
-import React, { Suspense, ReactElement, useState } from 'react';
+import React, { Suspense, ReactElement } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Redirect } from 'react-router-dom';
+
+import { fetchAuthUser } from '../Store/Auth/actions';
 
 import Loader from '../Hoc/Loader';
 import RouteWrapper from './RouteWrapper';
 import RouteItems from './route-items';
+import State from '../Store/state';
 
 export default function Routes(): ReactElement {
-    const [fetching, setFetching] = useState<boolean>(false);
+    const dispatch = useDispatch();
+    const authState = useSelector<State, State['auth']['state']>((state) => state.auth.state);
+    const signedIn = authState === 'authorized';
 
-    setTimeout(() => {
-        setFetching(true);
-    }, 1500);
+    if (authState === null || authState === 'authorizing') {
+        if (authState === null) {
+            dispatch(fetchAuthUser());
+        }
 
-    if (!fetching) {
         return <Loader />;
     }
-
-    const signedIn = false;
 
     const routes = RouteItems.map(({ path, exact, component, layout, access }) => {
         const key: string = (Array.isArray(path) ? path.concat(';') : path ?? Math.random()) as string;
