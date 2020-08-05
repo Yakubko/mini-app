@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 type Inputs = {
+    full_name: string;
     username: string;
     password: string;
     password_confirm: string;
@@ -16,10 +17,15 @@ type Props = {
 function Form(props: Props): ReactElement {
     const { register, watch, errors, setError, clearErrors, formState, handleSubmit } = useForm<Inputs>({
         mode: 'onChange',
+        defaultValues: {
+            full_name: 'Jakub',
+            username: 'jakub',
+        },
     });
     const { touched, isSubmitting } = formState;
 
     const inputsClasses = {
+        fullName: `form-control${errors.username ? ' is-invalid' : ''}`,
         username: `form-control${errors.username ? ' is-invalid' : ''}`,
         password: `form-control${errors.password ? ' is-invalid' : ''}`,
         passwordConfirm: `form-control${
@@ -37,14 +43,14 @@ function Form(props: Props): ReactElement {
                 .post('/api/v1/sign-up', data, { headers: { 'Content-Type': 'application/json' } })
                 .then(() => {
                     resolve();
+                    setSingedUp(true);
                 })
                 .catch((err: AxiosError<any>) => {
                     console.log(err);
 
                     setTimeout(() => {
-                        setSingedUp(true);
                         resolve();
-                    }, 4000);
+                    }, 2000);
                 });
         });
     };
@@ -52,6 +58,16 @@ function Form(props: Props): ReactElement {
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="input-group mb-3">
+                    <input
+                        type="text"
+                        name="full_name"
+                        className={inputsClasses.fullName}
+                        placeholder="Full name"
+                        disabled={isSubmitting}
+                        ref={register({ required: true })}
+                    />
+                </div>
                 <div className="input-group mb-3">
                     <input
                         type="text"

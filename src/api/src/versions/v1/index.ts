@@ -32,16 +32,13 @@ versionRouter.all('/who-am-i', function (req: Request, res: Response) {
     }
 
     Auth.validate((err, user) => {
-        const output = {
-            user: user || null,
-            time: new Date().getTime(),
-        };
+        const output = user || null;
         res.json(output);
     }, req.headers['authorization']);
 });
 
 // Endpoint for sign in authorization
-versionRouter.all('/signin', function (req: Request, res: Response) {
+versionRouter.all('/sign-in', function (req: Request, res: Response) {
     if (req.method !== 'POST') {
         res.set('Allow', 'POST').status(405).send();
     }
@@ -56,7 +53,7 @@ versionRouter.all('/signin', function (req: Request, res: Response) {
 });
 
 // Endpoint for sign up request
-versionRouter.all('/signup', function (req: Request, res: Response) {
+versionRouter.all('/sign-up', function (req: Request, res: Response) {
     if (req.method !== 'POST') {
         res.set('Allow', 'POST').status(405).send();
     }

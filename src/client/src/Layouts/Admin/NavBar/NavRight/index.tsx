@@ -6,6 +6,11 @@ import Avatar2 from '../../../../assets/images/user/avatar-2.jpg';
 import Avatar3 from '../../../../assets/images/user/avatar-3.jpg';
 
 function NavRight(): ReactElement {
+    const logOut = (): void => {
+        localStorage.removeItem('token');
+        window.location.pathname = '/';
+    };
+
     return (
         <>
             <ul className="navbar-nav ml-auto">
@@ -92,9 +97,14 @@ function NavRight(): ReactElement {
                             <div className="pro-head">
                                 <img src={Avatar1} className="img-radius" alt="User Profile" />
                                 <span>John Doe</span>
-                                <a href="#!" className="dud-logout" title="Logout">
+                                <button
+                                    type="button"
+                                    className="btn btn-link dud-logout pr-3"
+                                    title="Logout"
+                                    onClick={logOut}
+                                >
                                     <i className="feather icon-log-out" />
-                                </a>
+                                </button>
                             </div>
                             <ul className="pro-body">
                                 <li>

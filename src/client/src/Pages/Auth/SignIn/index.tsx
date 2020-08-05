@@ -1,10 +1,7 @@
-import React, { ReactElement } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React, { ReactElement, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios, { AxiosError } from 'axios';
-
-import { setSignedIn } from '../../../Store/Auth/actions';
 
 type Inputs = {
     username: string;
@@ -12,8 +9,7 @@ type Inputs = {
 };
 
 function SignIn(): ReactElement {
-    const dispatch = useDispatch();
-    const history = useHistory();
+    const [errorMessage, setErrorMessage] = useState<string>();
     const { register, errors, formState, handleSubmit } = useForm<Inputs>({
         mode: 'onChange',
     });
@@ -25,21 +21,21 @@ function SignIn(): ReactElement {
     };
 
     const onSubmit = async (data: Inputs): Promise<undefined> => {
+        setErrorMessage('');
         return new Promise((resolve) => {
             axios
                 .post('/api/v1/sign-in', data, { headers: { 'Content-Type': 'application/json' } })
-                .then(() => {
-                    resolve();
+                .then((response) => {
+                    localStorage.setItem('token', response.data.token);
+                    window.location.pathname = '/';
 
-                    // localStorage.setItem('token', response.data.token);
+                    resolve();
                 })
                 .catch((err: AxiosError<any>) => {
-                    console.log(err);
-                    setTimeout(() => {
-                        dispatch(setSignedIn({}));
-                        resolve();
-                        history.push('/dashboard');
-                    }, 2000);
+                    console.log(err.response);
+                    setErrorMessage(err.response?.data.message);
+
+                    resolve();
                 });
         });
     };
@@ -52,7 +48,7 @@ function SignIn(): ReactElement {
                         <i className="feather icon-unlock auth-icon" />
                     </div>
                     <h3 className="mb-4">Sign in</h3>
-                    <div className="text-danger mb-2">Error</div>
+                    {errorMessage ? <div className="text-danger mb-2">{errorMessage}</div> : null}
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="input-group mb-3">
                             <input

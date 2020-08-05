@@ -1,8 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React, { ReactElement } from 'react';
 
-type Props = {};
-
-const loader: FunctionComponent<Props> = () => {
+function Loader(): ReactElement {
     return (
         <div className="loader-bg">
             <div className="loader-track">
@@ -10,6 +8,6 @@ const loader: FunctionComponent<Props> = () => {
             </div>
         </div>
     );
-};
+}
 
-export default loader;
+export default Loader;
