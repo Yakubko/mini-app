@@ -10,15 +10,6 @@ services:
         container_name: ${CONTAINER_NAME_CLIENT}
         depends_on:
             - api
-    api2:
-        build:
-            context: ./src/api2
-        volumes:
-            - ./src/api2:/api2
-            - /api2/node_modules
-        container_name: ${CONTAINER_NAME_API2}
-        depends_on:
-            - flyway
     api:
         build:
             context: ./src/api
