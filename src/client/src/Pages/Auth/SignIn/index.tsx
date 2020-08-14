@@ -20,7 +20,7 @@ function SignIn(): ReactElement {
         password: `form-control${errors.password ? ' is-invalid' : ''}`,
     };
 
-    const onSubmit = async (data: Inputs): Promise<undefined> => {
+    const onSubmit = async (data: Inputs): Promise<void> => {
         setErrorMessage('');
         return new Promise((resolve) => {
             axios

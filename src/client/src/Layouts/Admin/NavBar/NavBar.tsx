@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 
-import NavLeft from './NavLeft';
 import NavRight from './NavRight';
 
 import { StoreProps } from './types';
@@ -31,7 +30,6 @@ function NavBar(props: StoreProps): ReactElement {
                     <i className="feather icon-more-horizontal" />
                 </a>
                 <div className="collapse navbar-collapse">
-                    <NavLeft />
                     <NavRight />
                 </div>
             </header>

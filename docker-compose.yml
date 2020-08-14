@@ -23,7 +23,7 @@ services:
         image: boxfuse/flyway:5.2.1
         command: -url=jdbc:postgresql://db:5432/${DB_DATABASE} -schemas=public -user=${DB_USER} -password=${DB_PASSWORD} migrate
         volumes:
-            - ./src/sql:/flyway/sql
+            - ./sql:/flyway/sql
         container_name: ${CONTAINER_NAME_FLYWAY}
         depends_on:
             - db
