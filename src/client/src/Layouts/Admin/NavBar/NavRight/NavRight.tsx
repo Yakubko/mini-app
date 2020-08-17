@@ -1,11 +1,19 @@
 import React, { ReactElement } from 'react';
 import { Dropdown } from 'react-bootstrap';
 
+import { Props } from './types';
+
 import Avatar1 from '../../../../assets/images/user/avatar-1.jpg';
 import Avatar2 from '../../../../assets/images/user/avatar-2.jpg';
 import Avatar3 from '../../../../assets/images/user/avatar-3.jpg';
 
-function NavRight(): ReactElement {
+function NavRight(props: Props): ReactElement {
+    const { authData } = props;
+    let fullName = '';
+    if (authData) {
+        fullName = authData.full_name;
+    }
+
     const logOut = (): void => {
         localStorage.removeItem('token');
         window.location.pathname = '/';
@@ -96,7 +104,7 @@ function NavRight(): ReactElement {
                         <Dropdown.Menu alignRight className="profile-notification">
                             <div className="pro-head">
                                 <img src={Avatar1} className="img-radius" alt="User Profile" />
-                                <span>John Doe</span>
+                                <span>{fullName}</span>
                                 <button
                                     type="button"
                                     className="btn btn-link dud-logout pr-3"

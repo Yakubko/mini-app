@@ -6,15 +6,17 @@ import useRestAPI from '../../../Hooks/useRestApi';
 
 import avatar1 from '../../../assets/images/user/avatar-1.jpg';
 
-function Docs(): ReactElement {
-    const [{ data, error, loading }] = useRestAPI();
+import { Props } from './types';
 
-    let tableContent = (
-        <>
-            <tbody />
-        </>
-    );
+function Docs(props: Props): ReactElement {
+    const { data, error, loading } = useRestAPI();
+    const { authData } = props;
 
+    const removeItem = (id: any): void => {
+        alert(id);
+    };
+
+    let tableContent = null;
     if (data) {
         tableContent = (
             <>
@@ -40,9 +42,19 @@ function Docs(): ReactElement {
                                 </h6>
                             </td>
                             <td className="text-right">
-                                <a href="#!" className="label theme-bg2 text-white f-12">
-                                    Delete
-                                </a>
+                                {authData?.id !== id ? (
+                                    <a
+                                        href="#!"
+                                        onClick={(): void => {
+                                            removeItem(id);
+                                        }}
+                                        className="label theme-bg2 text-white f-12"
+                                    >
+                                        Delete
+                                    </a>
+                                ) : (
+                                    <></>
+                                )}
                             </td>
                         </tr>
                     ))}

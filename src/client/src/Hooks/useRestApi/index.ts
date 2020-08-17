@@ -9,7 +9,7 @@ function useRestAPI(
     initialQuery: Query = {
         method: 'get',
     },
-): [{ data: any[] | null; error: boolean; loading: boolean }, { fetch: Dispatch<SetStateAction<Query>> }] {
+): { data: any[] | null; error: boolean; loading: boolean; fetch: Dispatch<SetStateAction<Query>> } {
     const [data, setData] = useState<any[] | null>(null);
     const [query, setQuery] = useState(initialQuery);
     const [error, setError] = useState(false);
@@ -31,7 +31,7 @@ function useRestAPI(
         })();
     }, [query]);
 
-    return [{ data, loading, error }, { fetch: setQuery }];
+    return { data, loading, error, fetch: setQuery };
 }
 
 export default useRestAPI;
