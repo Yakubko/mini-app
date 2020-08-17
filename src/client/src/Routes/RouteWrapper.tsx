@@ -1,6 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { Route, RouteProps, Redirect } from 'react-router-dom';
 
+import config from '../config';
 import BlankLayout from '../Layouts/Blank';
 import AuthLayout from '../Layouts/Auth';
 import AdminLayout from '../Layouts/Admin';
@@ -43,7 +44,7 @@ export default function RouteWrapper({
     }
 
     if (access === 'public' && signedIn) {
-        return <Redirect to="/dashboard" />;
+        return <Redirect to={config.defaultPath} />;
     }
 
     return (

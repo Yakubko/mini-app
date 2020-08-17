@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { SET_STATE, SET_SIGNED_OUT, SET_SIGNED_IN } from './constants';
@@ -29,16 +29,6 @@ export function setSignedIn(data: State['auth']['data']): SetSignedIn {
 
 export type AuthActions = SetState | SetSignedOut | SetSignedIn;
 
-//
-
-// TODO: otazne ci nechat a nepresunut ako signIn
-export const logout = (): ThunkAction<SetSignedOut, State, null, any> => {
-    return (dispatch: ThunkDispatch<State, undefined, any>): SetSignedOut => {
-        localStorage.removeItem('token');
-        return dispatch(setSignedOut());
-    };
-};
-
 export const fetchAuthUser = (): ThunkAction<Promise<any>, State, null, any> => {
     return async (dispatch: ThunkDispatch<State, null, any>): Promise<any> => {
         dispatch(setState('authorizing'));
@@ -47,9 +37,7 @@ export const fetchAuthUser = (): ThunkAction<Promise<any>, State, null, any> => 
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
         try {
-            const response: AxiosResponse<State['auth']['data']> = await axios.get<State['auth']['data']>(
-                '/api/v1/who-am-i',
-            );
+            const response = await axios.get<State['auth']['data']>('/api/v1/who-am-i');
 
             if (response.data) {
                 dispatch(setSignedIn(response.data));
@@ -58,7 +46,7 @@ export const fetchAuthUser = (): ThunkAction<Promise<any>, State, null, any> => 
             }
         } catch (err) {
             localStorage.removeItem('token');
-            dispatch(setState('unauthorized'));
+            dispatch(setSignedOut());
         }
     };
 };

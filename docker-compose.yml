@@ -6,31 +6,25 @@ services:
         volumes:
             - ./src/client:/client
             - /client/node_modules
-        ports:
-            - 3000:3000
         tty: true
-        container_name: mini_app_client
+        container_name: ${CONTAINER_NAME_CLIENT}
         depends_on:
             - api
     api:
         build:
             context: ./src/api
-        env_file:
-            - .env
         volumes:
             - ./src/api:/api
             - /api/node_modules
-        ports:
-            - 8000:8000
-        container_name: mini_app_api
+        container_name: ${CONTAINER_NAME_API}
         depends_on:
             - flyway
     flyway:
         image: boxfuse/flyway:5.2.1
         command: -url=jdbc:postgresql://db:5432/${DB_DATABASE} -schemas=public -user=${DB_USER} -password=${DB_PASSWORD} migrate
         volumes:
-            - ./src/sql:/flyway/sql
-        container_name: mini_app_flyway
+            - ./sql:/flyway/sql
+        container_name: ${CONTAINER_NAME_FLYWAY}
         depends_on:
             - db
     db:
@@ -41,4 +35,4 @@ services:
             - POSTGRES_DB=${DB_DATABASE}
         ports:
             - 5432:5432
-        container_name: mini_app_db
+        container_name: ${CONTAINER_NAME_DB}

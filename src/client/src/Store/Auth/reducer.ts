@@ -8,7 +8,7 @@ const AuthReducer = (state: AuthState = initialState, action: AuthActions): Auth
             return { ...state, state: action.payload };
 
         case SET_SIGNED_IN:
-            return { ...state, state: 'authorized' };
+            return { ...state, data: action.payload, state: 'authorized' };
 
         case SET_SIGNED_OUT:
             return { ...initialState, state: 'unauthorized' };

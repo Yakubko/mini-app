@@ -6,7 +6,7 @@ export type Config = {
 };
 
 const config: Config = {
-    defaultPath: '/dashboard',
+    defaultPath: '/users',
     collapseMenu: false,
     navFixedLayout: true,
     boxLayout: false,
