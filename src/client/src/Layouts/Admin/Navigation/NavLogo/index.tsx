@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 
-import State from '../../../../Store/state';
-import { CollapseMenu } from '../../../../Store/Gui/actions';
+import State from 'Store/state';
+import { CollapseMenu } from 'Store/Gui/actions';
 
 interface Props {
     collapseMenu: State['gui']['collapseMenu'];

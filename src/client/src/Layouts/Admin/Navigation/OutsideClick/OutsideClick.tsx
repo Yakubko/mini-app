@@ -1,51 +1,38 @@
-import React, { Component, ReactElement } from 'react';
+import React, { ReactElement, ReactNode, useEffect, useRef } from 'react';
+
+import useWindowSize from 'Hooks/useWindowSize';
 
 import { StoreProps } from './types';
 
-class OutsideClick extends Component<StoreProps> {
-    wrapperRef: any = null;
+type Props = StoreProps & { children: ReactNode };
 
-    constructor(props: StoreProps) {
-        super(props);
+function OutsideClick(props: Props): ReactElement {
+    const wrapperRef = useRef<any>(null);
+    const { width } = useWindowSize();
+    const { children, collapseMenu, onToggleNavigation } = props;
 
-        this.setWrapperRef = this.setWrapperRef.bind(this);
-        this.handleOutsideClick = this.handleOutsideClick.bind(this);
-    }
-
-    componentDidMount(): void {
-        document.addEventListener('mousedown', this.handleOutsideClick);
-    }
-
-    componentWillUnmount(): void {
-        document.removeEventListener('mousedown', this.handleOutsideClick);
-    }
-
-    setWrapperRef(node: any): void {
-        this.wrapperRef = node;
-    }
-
-    /**
-     * close menu if clicked on outside of element
-     */
-    handleOutsideClick(event: any): void {
-        const { windowWidth, collapseMenu, onToggleNavigation } = this.props;
-
-        if (this.wrapperRef !== null && !this.wrapperRef.contains(event.target)) {
-            if (windowWidth < 992 && collapseMenu) {
-                onToggleNavigation();
+    useEffect(() => {
+        function handleOutsideClick(event: Event): void {
+            if (wrapperRef.current !== null && !wrapperRef.current.contains(event.target)) {
+                console.log(wrapperRef.current, collapseMenu);
+                if (width < 992 && collapseMenu) {
+                    onToggleNavigation();
+                }
             }
         }
-    }
 
-    render(): ReactElement {
-        const { children } = this.props;
+        // Add event listener
+        document.addEventListener('mousedown', handleOutsideClick);
 
-        return (
-            <div className="nav-outside" ref={this.setWrapperRef}>
-                {children}
-            </div>
-        );
-    }
+        // Remove event listener on cleanup
+        return (): void => document.removeEventListener('mousedown', handleOutsideClick);
+    });
+
+    return (
+        <div className="nav-outside" ref={wrapperRef}>
+            {children}
+        </div>
+    );
 }
 
 export default OutsideClick;

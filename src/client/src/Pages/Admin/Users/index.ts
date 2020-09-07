@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
+import State from 'Store/state';
+
 import Users from './Users';
 import { Props } from './types';
-
-import State from '../../../Store/state';
 
 const mapStateToProps = (state: State): Props => {
     return {

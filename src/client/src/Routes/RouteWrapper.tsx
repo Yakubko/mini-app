@@ -1,10 +1,10 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { Route, RouteProps, Redirect } from 'react-router-dom';
 
-import config from '../config';
-import BlankLayout from '../Layouts/Blank';
-import AuthLayout from '../Layouts/Auth';
-import AdminLayout from '../Layouts/Admin';
+import config from 'config';
+import BlankLayout from 'Layouts/Blank';
+import AuthLayout from 'Layouts/Auth';
+import AdminLayout from 'Layouts/Admin';
 
 export type RouteWrapperProps = RouteProps & {
     path: RouteProps['path'];
