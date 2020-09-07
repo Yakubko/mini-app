@@ -3,13 +3,16 @@
 import React, { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
 
+import useWindowSize from 'Hooks/useWindowSize';
+
 import NavIcon from '../NavIcon';
 import NavBadge from '../NavBadge';
 
 import { StoreProps } from './types';
 
-function NavItem(props: StoreProps, _ref: any): ReactElement {
-    const { item, onItemClick, windowWidth } = props;
+function NavItem(props: StoreProps): ReactElement {
+    const { width } = useWindowSize();
+    const { item, onItemClick } = props;
 
     const itemTitle = item.icon ? <span className="pcoded-mtext">{item.title}</span> : item.title;
     const itemTarget = item.target ? '_blank' : '';
@@ -33,7 +36,7 @@ function NavItem(props: StoreProps, _ref: any): ReactElement {
         );
     }
     let mainContent = <></>;
-    if (windowWidth < 992) {
+    if (width < 992) {
         mainContent = (
             <li className={item.classes} onClick={onItemClick}>
                 {subContent}

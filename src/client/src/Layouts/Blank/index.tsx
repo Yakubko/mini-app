@@ -1,9 +1,13 @@
-import React, { ReactNode, FunctionComponent } from 'react';
+import React, { ReactNode, ReactElement } from 'react';
 
-import '../../assets/scss/style.scss';
+import 'assets/scss/style.scss';
 
-const Blank: FunctionComponent<ReactNode> = ({ children }) => {
-    return <>{children}</>;
+type Props = {
+    children: ReactNode;
 };
+
+function Blank({ children }: Props): ReactElement {
+    return <>{children}</>;
+}
 
 export default Blank;

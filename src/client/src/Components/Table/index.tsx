@@ -13,10 +13,18 @@ const RemoteTable: FC<CardProps> = ({ children, error = false, loading = false, 
     let tableContent = <>{children}</>;
 
     if (loading) {
-        tableContent = <Loading />;
+        tableContent = (
+            <tbody>
+                <Loading />
+            </tbody>
+        );
     }
     if (error) {
-        tableContent = <Error />;
+        tableContent = (
+            <tbody>
+                <Error />
+            </tbody>
+        );
     }
 
     return (

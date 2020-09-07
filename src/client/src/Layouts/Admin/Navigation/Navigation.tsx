@@ -1,5 +1,7 @@
 import React, { ReactElement } from 'react';
 
+import useWindowSize from 'Hooks/useWindowSize';
+
 import NavLogo from './NavLogo';
 import NavContent from './NavContent';
 import OutsideClick from './OutsideClick';
@@ -7,8 +9,9 @@ import navigation from '../menu-items';
 
 import { StoreProps } from './types';
 
-function Navigation(props: StoreProps, _ref: any): ReactElement {
-    const { windowWidth, collapseMenu, navFixedLayout, boxLayout, onToggleNavigation } = props;
+function Navigation(props: StoreProps): ReactElement {
+    const { width } = useWindowSize();
+    const { collapseMenu, navFixedLayout, boxLayout, onToggleNavigation } = props;
 
     let navClass = ['pcoded-navbar'];
 
@@ -18,7 +21,7 @@ function Navigation(props: StoreProps, _ref: any): ReactElement {
         navClass = [...navClass, 'menupos-static'];
     }
 
-    if (windowWidth < 992 && collapseMenu) {
+    if (width < 992 && collapseMenu) {
         navClass = [...navClass, 'mob-open'];
     } else if (collapseMenu) {
         navClass = [...navClass, 'navbar-collapsed'];
@@ -38,7 +41,7 @@ function Navigation(props: StoreProps, _ref: any): ReactElement {
             <NavContent navigation={navigation} />
         </div>
     );
-    if (windowWidth < 992) {
+    if (width < 992) {
         navContent = (
             <OutsideClick>
                 <div className="navbar-wrapper">

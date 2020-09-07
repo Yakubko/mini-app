@@ -1,8 +1,7 @@
-import { WindowSizeProps } from 'react-window-size';
 import { RouteComponentProps } from 'react-router-dom';
 
-import State from '../../../../Store/state';
-import { NavContentLeave } from '../../../../Store/Gui/actions';
+import State from 'Store/state';
+import { NavContentLeave } from 'Store/Gui/actions';
 
 import { MenuItem } from '../../menu-items';
 
@@ -16,7 +15,6 @@ export interface DispatchProps {
 
 export type StoreProps = StateProps &
     DispatchProps &
-    WindowSizeProps &
     RouteComponentProps & {
         navigation: MenuItem[];
     };

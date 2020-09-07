@@ -1,10 +1,14 @@
-import React, { Suspense, ReactNode, FunctionComponent } from 'react';
+import React, { Suspense, ReactNode, ReactElement } from 'react';
 
-import Loader from '../../Hoc/Loader';
+import Loader from 'Hoc/Loader';
 
-import '../../assets/scss/style.scss';
+import 'assets/scss/style.scss';
 
-const Auth: FunctionComponent<ReactNode> = ({ children }) => {
+type Props = {
+    children: ReactNode;
+};
+
+function Auth({ children }: Props): ReactElement {
     return (
         <>
             <Suspense fallback={<Loader />}>
@@ -22,6 +26,6 @@ const Auth: FunctionComponent<ReactNode> = ({ children }) => {
             </Suspense>
         </>
     );
-};
+}
 
 export default Auth;

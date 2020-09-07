@@ -2,12 +2,12 @@ import React, { Suspense, ReactElement } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Redirect } from 'react-router-dom';
 
-import { fetchAuthUser } from '../Store/Auth/actions';
+import Loader from 'Hoc/Loader';
+import State from 'Store/state';
+import { fetchAuthUser } from 'Store/Auth/actions';
 
-import Loader from '../Hoc/Loader';
 import RouteWrapper from './RouteWrapper';
 import RouteItems from './route-items';
-import State from '../Store/state';
 
 export default function Routes(): ReactElement {
     const dispatch = useDispatch();

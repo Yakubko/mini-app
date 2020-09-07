@@ -6,7 +6,7 @@ import NavGroup from './NavGroup';
 import { StoreProps } from './types';
 import { MenuItem } from '../../menu-items';
 
-function NavContent(props: StoreProps, _ref: any): ReactElement {
+function NavContent(props: StoreProps): ReactElement {
     const { navigation } = props;
     const navItems = navigation.map((item: MenuItem) => {
         switch (item.type) {

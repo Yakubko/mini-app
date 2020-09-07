@@ -1,17 +1,22 @@
-import React, { Suspense, useEffect, FC } from 'react';
+import React, { Suspense, useEffect, ReactNode, ReactElement } from 'react';
+
+import Loader from 'Hoc/Loader';
+import useWindowSize from 'Hooks/useWindowSize';
 
 import './app.scss';
 
 import Navigation from './Navigation';
 import NavBar from './NavBar';
 import Breadcrumb from './Breadcrumb';
-import Loader from '../../Hoc/Loader';
-
 import { StoreProps } from './types';
 
-const Admin: FC<StoreProps> = ({ children, windowWidth, actionCollapseMenu }) => {
+type Props = StoreProps & { children: ReactNode };
+
+function Admin({ children, actionCollapseMenu }: Props): ReactElement {
+    const { width } = useWindowSize();
+
     useEffect(() => {
-        if (windowWidth > 992 && windowWidth <= 1024) {
+        if (width > 992 && width <= 1024) {
             actionCollapseMenu();
         }
     });
@@ -36,6 +41,6 @@ const Admin: FC<StoreProps> = ({ children, windowWidth, actionCollapseMenu }) =>
             </div>
         </>
     );
-};
+}
 
 export default Admin;

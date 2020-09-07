@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 
-import RemoteTable from '../../../Components/Table';
-import useRestAPI from '../../../Hooks/useRestApi';
+import RemoteTable from 'Components/Table';
+import useRestAPI from 'Hooks/useRestApi';
 
-import avatar1 from '../../../assets/images/user/avatar-1.jpg';
+import avatar1 from 'assets/images/user/avatar-1.jpg';
 
 import { Props } from './types';
 
@@ -13,7 +13,7 @@ function Docs(props: Props): ReactElement {
     const { authData } = props;
 
     const removeItem = (id: any): void => {
-        alert(id);
+        // alert(id);
     };
 
     let tableContent = null;

@@ -1,8 +1,9 @@
 import { RouteComponentProps } from 'react-router-dom';
 
-import State from '../../../../../Store/state';
+import State from 'Store/state';
+import { CollapseToggle } from 'Store/Gui/actions';
+
 import { MenuItem } from '../../../menu-items';
-import { CollapseToggle } from '../../../../../Store/Gui/actions';
 
 export interface StateProps {
     isOpen: State['gui']['isOpen'];
