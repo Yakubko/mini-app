@@ -14,7 +14,6 @@ function navGroup({ item: { id, title, children } }: Props): ReactElement {
     if (children) {
         navItems = Object.keys(children).map((index: any) => {
             const item = children[index];
-            // console.log(item.type);
             switch (item.type) {
                 case 'collapse':
                     return <NavCollapse key={item.id} item={item} type="main" />;
