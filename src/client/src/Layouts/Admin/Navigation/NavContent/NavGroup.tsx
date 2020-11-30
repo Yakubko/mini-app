@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
 
-import NavItem from '../NavItem';
-import NavCollapse from '../NavCollapse';
+import NavItem from './NavItem';
+import NavCollapse from './NavCollapse';
 
-import { MenuItem } from '../../../menu-items';
+import { MenuItem } from '../../menu-items';
 
 type Props = {
     item: MenuItem;

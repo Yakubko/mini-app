@@ -1,22 +1,25 @@
 import React, { ReactElement, ReactNode, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useWindowSize from 'Hooks/useWindowSize';
 
-import { StoreProps } from './types';
+import State from 'Store/state';
+import { collapseMenu } from 'Store/Gui/actions';
 
-type Props = StoreProps & { children: ReactNode };
+type Props = { children: ReactNode };
 
 function OutsideClick(props: Props): ReactElement {
     const wrapperRef = useRef<any>(null);
+    const dispatch = useDispatch();
+    const collapse = useSelector<State, State['gui']['collapseMenu']>((state) => state.gui.collapseMenu);
     const { width } = useWindowSize();
-    const { children, collapseMenu, onToggleNavigation } = props;
+    const { children } = props;
 
     useEffect(() => {
         function handleOutsideClick(event: Event): void {
             if (wrapperRef.current !== null && !wrapperRef.current.contains(event.target)) {
-                console.log(wrapperRef.current, collapseMenu);
-                if (width < 992 && collapseMenu) {
-                    onToggleNavigation();
+                if (width < 992 && collapse) {
+                    dispatch(collapseMenu());
                 }
             }
         }

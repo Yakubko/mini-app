@@ -6,7 +6,7 @@ type RouteProps = RouteWrapperProps;
 const SignIn = lazy(() => import('Pages/Auth/SignIn'));
 const SignUp = lazy(() => import('Pages/Auth/SignUp'));
 
-const Dashboard = lazy(() => import('Pages/Admin/Dashboard/Default'));
+const Dashboard = lazy(() => import('Pages/Admin/Dashboard'));
 const Users = lazy(() => import('Pages/Admin/Users'));
 
 const routeItems: RouteProps[] = [

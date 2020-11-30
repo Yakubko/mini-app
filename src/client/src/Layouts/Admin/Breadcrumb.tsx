@@ -1,6 +1,6 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 
-import navigation, { MenuItem } from '../menu-items';
+import navigation, { MenuItem } from './menu-items';
 
 function Breadcrumb(): ReactElement {
     const [item, setItem] = useState<MenuItem | null>(null);

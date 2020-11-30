@@ -2,17 +2,24 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import useWindowSize from 'Hooks/useWindowSize';
+import { collapseMenu } from 'Store/Gui/actions';
 
-import NavIcon from '../NavIcon';
-import NavBadge from '../NavBadge';
+import NavIcon from './NavIcon';
+import NavBadge from './NavBadge';
 
-import { StoreProps } from './types';
+import { MenuItem } from '../../menu-items';
 
-function NavItem(props: StoreProps): ReactElement {
+type Props = {
+    item: MenuItem;
+};
+
+function NavItem(props: Props): ReactElement {
+    const dispatch = useDispatch();
+    const { item } = props;
     const { width } = useWindowSize();
-    const { item, onItemClick } = props;
 
     const itemTitle = item.icon ? <span className="pcoded-mtext">{item.title}</span> : item.title;
     const itemTarget = item.target ? '_blank' : '';
@@ -38,7 +45,12 @@ function NavItem(props: StoreProps): ReactElement {
     let mainContent = <></>;
     if (width < 992) {
         mainContent = (
-            <li className={item.classes} onClick={onItemClick}>
+            <li
+                className={item.classes}
+                onClick={(): void => {
+                    dispatch(collapseMenu());
+                }}
+            >
                 {subContent}
             </li>
         );

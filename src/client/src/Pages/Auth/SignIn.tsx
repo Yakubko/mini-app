@@ -72,9 +72,7 @@ function SignIn(): ReactElement {
                         </div>
 
                         <button type="submit" className="btn btn-primary shadow-2 mb-4" disabled={isSubmitting}>
-                            {isSubmitting ? (
-                                <span className="spinner-border spinner-border-sm mr-2" role="status" />
-                            ) : null}
+                            {isSubmitting ? <span className="spinner-border spinner-border-sm mr-2" role="status" /> : null}
                             Sign in
                         </button>
                     </form>

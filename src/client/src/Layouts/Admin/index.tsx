@@ -1,7 +1,6 @@
-import React, { Suspense, useEffect, ReactNode, ReactElement } from 'react';
+import React, { Suspense, ReactNode, ReactElement } from 'react';
 
 import Loader from 'Hoc/Loader';
-import useWindowSize from 'Hooks/useWindowSize';
 
 import './app.scss';
 
@@ -12,15 +11,7 @@ import { StoreProps } from './types';
 
 type Props = StoreProps & { children: ReactNode };
 
-function Admin({ children, actionCollapseMenu }: Props): ReactElement {
-    const { width } = useWindowSize();
-
-    useEffect(() => {
-        if (width > 992 && width <= 1024) {
-            actionCollapseMenu();
-        }
-    });
-
+function Admin({ children }: Props): ReactElement {
     return (
         <>
             <Navigation />

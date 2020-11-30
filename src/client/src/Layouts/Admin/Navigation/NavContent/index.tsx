@@ -3,12 +3,15 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import NavGroup from './NavGroup';
 
-import { StoreProps } from './types';
 import { MenuItem } from '../../menu-items';
 
-function NavContent(props: StoreProps): ReactElement {
+type Props = {
+    navigation: MenuItem[];
+};
+
+function NavContent(props: Props): ReactElement {
     const { navigation } = props;
-    const navItems = navigation.map((item: MenuItem) => {
+    const navItems = navigation.map((item) => {
         switch (item.type) {
             case 'group':
                 return <NavGroup key={item.id} item={item} />;

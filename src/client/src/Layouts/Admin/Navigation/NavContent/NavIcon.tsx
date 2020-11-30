@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 
-import { MenuItem } from '../../../menu-items';
+import { MenuItem } from '../../menu-items';
 
 type Props = {
     item: MenuItem;

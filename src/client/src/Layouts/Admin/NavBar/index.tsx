@@ -1,14 +1,17 @@
 import React, { ReactElement } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import State from 'Store/state';
+import { collapseMenu } from 'Store/Gui/actions';
 
 import NavRight from './NavRight';
 
-import { StoreProps } from './types';
-
-function NavBar(props: StoreProps): ReactElement {
-    const { collapseMenu, onToggleNavigation } = props;
+function NavBar(): ReactElement {
+    const dispatch = useDispatch();
+    const collapse = useSelector<State, State['gui']['collapseMenu']>((state) => state.gui.collapseMenu);
 
     let toggleClass = ['mobile-menu'];
-    if (collapseMenu) {
+    if (collapse) {
         toggleClass = [...toggleClass, 'on'];
     }
 
@@ -16,7 +19,14 @@ function NavBar(props: StoreProps): ReactElement {
         <>
             <header className="navbar pcoded-header navbar-expand-lg">
                 <div className="m-header">
-                    <a className={toggleClass.join(' ')} id="mobile-collapse1" href="#!" onClick={onToggleNavigation}>
+                    <a
+                        className={toggleClass.join(' ')}
+                        id="mobile-collapse1"
+                        href="#!"
+                        onClick={(): void => {
+                            dispatch(collapseMenu());
+                        }}
+                    >
                         <span />
                     </a>
                     <a href="#!" className="b-brand">

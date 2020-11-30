@@ -1,21 +1,32 @@
 import React, { ReactElement } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
+
+import State from 'Store/state';
 
 import useWindowSize from 'Hooks/useWindowSize';
 
-import NavLogo from './NavLogo';
+import NavLogo from './NevLogo';
 import NavContent from './NavContent';
 import OutsideClick from './OutsideClick';
 import navigation from '../menu-items';
 
-import { StoreProps } from './types';
+type SelectorReturn = {
+    collapseMenu: State['gui']['collapseMenu'];
+    navFixedLayout: State['gui']['navFixedLayout'];
+    boxLayout: State['gui']['boxLayout'];
+};
 
-function Navigation(props: StoreProps): ReactElement {
+function Navigation(): ReactElement {
+    const { collapseMenu, navFixedLayout, boxLayout } = useSelector<State, SelectorReturn>((state) => {
+        return {
+            collapseMenu: state.gui.collapseMenu,
+            navFixedLayout: state.gui.navFixedLayout,
+            boxLayout: state.gui.boxLayout,
+        };
+    }, shallowEqual);
     const { width } = useWindowSize();
-    const { collapseMenu, navFixedLayout, boxLayout, onToggleNavigation } = props;
 
-    let navClass = ['pcoded-navbar'];
-
-    navClass = [...navClass, 'drp-icon-style1', 'menu-item-icon-style1', 'active-default', 'title-default'];
+    let navClass = ['pcoded-navbar', 'drp-icon-style1', 'menu-item-icon-style1', 'active-default', 'title-default'];
 
     if (!navFixedLayout) {
         navClass = [...navClass, 'menupos-static'];
@@ -37,7 +48,7 @@ function Navigation(props: StoreProps): ReactElement {
 
     let navContent = (
         <div className="navbar-wrapper">
-            <NavLogo collapseMenu={collapseMenu} onToggleNavigation={onToggleNavigation} />
+            <NavLogo />
             <NavContent navigation={navigation} />
         </div>
     );
@@ -45,7 +56,7 @@ function Navigation(props: StoreProps): ReactElement {
         navContent = (
             <OutsideClick>
                 <div className="navbar-wrapper">
-                    <NavLogo collapseMenu={collapseMenu} onToggleNavigation={onToggleNavigation} />
+                    <NavLogo />
                     <NavContent navigation={navigation} />
                 </div>
             </OutsideClick>
